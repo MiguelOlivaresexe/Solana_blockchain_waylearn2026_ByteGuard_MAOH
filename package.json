@@ -1,0 +1,22 @@
+{
+  "name": "simple-store",
+  "version": "0.1.0",
+  "description": "A minimal Solana smart contract using Anchor",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "anchor build",
+    "test": "anchor test",
+    "deploy": "anchor deploy",
+    "localnet": "solana-test-validator"
+  },
+  "keywords": ["solana", "anchor", "rust"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@anchor-lang/anchor": "^0.28.0",
+    "@solana/web3.js": "^1.87.0",
+    "ts-mocha": "^10.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.0.0"
+  }
+}
