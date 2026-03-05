@@ -1,68 +1,95 @@
 import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
-import { SimpleStore } from "../target/types/simple_store";
+import { VaultChain } from "../target/types/vault_chain";
 import * as assert from "assert";
 
-describe("Simple Store", () => {
+describe("VaultChain - CRUD Operations", () => {
   // Configure the client to use the local cluster
   anchor.setProvider(anchor.AnchorProvider.env());
 
-  const program = anchor.workspace.SimpleStore as Program<SimpleStore>;
+  const program = anchor.workspace.VaultChain as Program<VaultChain>;
   const owner = anchor.web3.Keypair.generate();
-  const store = anchor.web3.Keypair.generate();
+  const vault = anchor.web3.Keypair.generate();
 
   before(async () => {
     // Airdrop SOL to the owner account
     const signature = await program.provider.connection.requestAirdrop(
       owner.publicKey,
-      1000000000 // 1 SOL
+      2000000000 // 2 SOL for operations
     );
     await program.provider.connection.confirmTransaction(signature);
   });
 
-  it("Initializes the store account", async () => {
+  it("CREATE: Initializes a new vault account", async () => {
     await program.methods
       .initialize()
       .accounts({
-        store: store.publicKey,
+        vault: vault.publicKey,
         owner: owner.publicKey,
         systemProgram: anchor.web3.SystemProgram.programId,
       })
-      .signers([owner, store])
+      .signers([owner, vault])
       .rpc();
 
-    const storeAccount = await program.account.dataStore.fetch(
-      store.publicKey
+    const vaultAccount = await program.account.vault.fetch(
+      vault.publicKey
     );
-    assert.strictEqual(storeAccount.owner.toString(), owner.publicKey.toString());
-    assert.strictEqual(storeAccount.data.toNumber(), 0);
+    assert.strictEqual(vaultAccount.owner.toString(), owner.publicKey.toString());
+    assert.strictEqual(vaultAccount.data.toNumber(), 0);
+    console.log("✅ CREATE: Vault initialized");
   });
 
-  it("Updates the stored data value", async () => {
+  it("READ: Fetches vault account data", async () => {
+    const vaultAccount = await program.account.vault.fetch(vault.publicKey);
+    assert.strictEqual(vaultAccount.owner.toString(), owner.publicKey.toString());
+    assert.strictEqual(vaultAccount.data.toNumber(), 0);
+    console.log("✅ READ: Vault data retrieved successfully");
+  });
+
+  it("UPDATE: Modifies the stored data value", async () => {
     const newValue = 42;
     await program.methods
       .setData(new anchor.BN(newValue))
       .accounts({
-        store: store.publicKey,
+        vault: vault.publicKey,
         owner: owner.publicKey,
       })
       .signers([owner])
       .rpc();
 
-    const storeAccount = await program.account.dataStore.fetch(
-      store.publicKey
+    const vaultAccount = await program.account.vault.fetch(
+      vault.publicKey
     );
-    assert.strictEqual(storeAccount.data.toNumber(), newValue);
+    assert.strictEqual(vaultAccount.data.toNumber(), newValue);
+    console.log("✅ UPDATE: Data changed to 42");
   });
 
-  it("Rejects updates from unauthorized accounts", async () => {
+  it("UPDATE: Verifies data persistence with another update", async () => {
+    const anotherValue = 100;
+    await program.methods
+      .setData(new anchor.BN(anotherValue))
+      .accounts({
+        vault: vault.publicKey,
+        owner: owner.publicKey,
+      })
+      .signers([owner])
+      .rpc();
+
+    const vaultAccount = await program.account.vault.fetch(
+      vault.publicKey
+    );
+    assert.strictEqual(vaultAccount.data.toNumber(), anotherValue);
+    console.log("✅ UPDATE: Data changed to 100");
+  });
+
+  it("UPDATE: Rejects unauthorized data updates", async () => {
     const unauthorizedUser = anchor.web3.Keypair.generate();
 
     try {
       await program.methods
         .setData(new anchor.BN(999))
         .accounts({
-          store: store.publicKey,
+          vault: vault.publicKey,
           owner: unauthorizedUser.publicKey,
         })
         .signers([unauthorizedUser])
@@ -74,23 +101,39 @@ describe("Simple Store", () => {
           error.message.includes("signature verification failed"),
         `Expected Unauthorized error, got: ${error.message}`
       );
+      console.log("✅ UPDATE: Unauthorized access rejected");
     }
   });
 
-  it("Updates to a different value", async () => {
-    const anotherValue = 100;
+  it("DELETE: Closes the vault and reclaims rent", async () => {
+    // Get balance before closing
+    const balanceBefore = await program.provider.connection.getBalance(
+      owner.publicKey
+    );
+
+    // Close the vault
     await program.methods
-      .setData(new anchor.BN(anotherValue))
+      .closeVault()
       .accounts({
-        store: store.publicKey,
+        vault: vault.publicKey,
         owner: owner.publicKey,
       })
       .signers([owner])
       .rpc();
 
-    const storeAccount = await program.account.dataStore.fetch(
-      store.publicKey
+    // Get balance after closing (should increase due to rent reclaim)
+    const balanceAfter = await program.provider.connection.getBalance(
+      owner.publicKey
     );
-    assert.strictEqual(storeAccount.data.toNumber(), anotherValue);
+
+    assert(balanceAfter > balanceBefore, "Owner should receive rent reclaim");
+    console.log("✅ DELETE: Vault closed, rent reclaimed");
+
+    // Verify vault account no longer exists
+    const vaultAccount = await program.provider.connection.getAccountInfo(
+      vault.publicKey
+    );
+    assert.strictEqual(vaultAccount, null, "Vault account should be closed");
+    console.log("✅ DELETE: Vault account verified as closed");
   });
 });

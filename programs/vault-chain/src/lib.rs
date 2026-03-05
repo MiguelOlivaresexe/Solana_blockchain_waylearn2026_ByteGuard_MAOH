@@ -3,7 +3,7 @@ use anchor_lang::prelude::*;
 declare_id!("SvmjFVPgVBBwEAV9p1w9CAF8sCmvBPjxPhhgXcNVBTe");
 
 #[program]
-pub mod simple_store {
+pub mod vault_chain {
     use super::*;
 
     /// Initialize a new data vault account

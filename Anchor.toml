@@ -3,7 +3,10 @@ seeds = false
 skip-lint = false
 
 [programs.localnet]
-simple_store = "SvmjFVPgVBBwEAV9p1w9CAF8sCmvBPjxPhhgXcNVBTe"
+vault_chain = "SvmjFVPgVBBwEAV9p1w9CAF8sCmvBPjxPhhgXcNVBTe"
+
+[programs.devnet]
+vault_chain = "SvmjFVPgVBBwEAV9p1w9CAF8sCmvBPjxPhhgXcNVBTe"
 
 [registry]
 url = "https://api.dev.solflare.com"
@@ -14,3 +17,4 @@ wallet = "~/.config/solana/id.json"
 
 [scripts]
 test = "yarn run ts-mocha --require ts-node/register --timeout 1000000 tests/**/*.ts"
+

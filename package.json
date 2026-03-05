@@ -1,7 +1,7 @@
 {
-  "name": "simple-store",
+  "name": "vault-chain",
   "version": "0.1.0",
-  "description": "A minimal Solana smart contract using Anchor",
+  "description": "A minimal Solana smart contract for the WayLearn Developer Certification bootcamp. Demonstrates core blockchain concepts: account-based architecture, program state, and access control.",
   "main": "dist/index.js",
   "scripts": {
     "build": "anchor build",
