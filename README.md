@@ -2,7 +2,7 @@
 
 > 🎓 A minimal on-chain data vault built for the **WayLearn Solana Developer Certification** bootcamp.
 
-**VaultChain** is a beginner-friendly Solana program that teaches the fundamental concepts required for blockchain development:
+**ByteGuard** is a beginner-friendly Solana program that teaches the fundamental concepts required for blockchain development:
 
 ## 📚 Bootcamp Learning Objectives
 
