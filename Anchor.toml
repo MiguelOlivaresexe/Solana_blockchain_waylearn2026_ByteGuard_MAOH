@@ -3,12 +3,12 @@ seeds = false
 skip-lint = false
 
 [programs.localnet]
-simple_store = "5dGGmRfwYqKg3WXhcmG7ioxeLmw8pQMUYNxbvbibaJ5z"
-vault_chain = "HSQMtGMTM4LfmQt7qGB52ZhpCH8LVAVYJcV2Q3ZDqfzJ"
+simple_store = "BsPTGFdpimkW1KTCRtXDRYgVKjPc8w9oWVghuY4WRyfW"
+vault_chain = "DG4yk7viv6UpFBHaVRjyhviqPEeuRnNJuF6jb1Yt36so"
 
 [programs.devnet]
-simple_store = "5dGGmRfwYqKg3WXhcmG7ioxeLmw8pQMUYNxbvbibaJ5z"
-vault_chain = "HSQMtGMTM4LfmQt7qGB52ZhpCH8LVAVYJcV2Q3ZDqfzJ"
+simple_store = "BsPTGFdpimkW1KTCRtXDRYgVKjPc8w9oWVghuY4WRyfW"
+vault_chain = "DG4yk7viv6UpFBHaVRjyhviqPEeuRnNJuF6jb1Yt36so"
 
 [registry]
 url = "https://api.apr.dev"
