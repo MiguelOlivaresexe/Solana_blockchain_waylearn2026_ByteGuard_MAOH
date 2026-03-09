@@ -432,3 +432,43 @@ After completing this, move on to:
 MIT - Open source for learning and community contribution.
 
 **Built for:** [WayLearn Solana Developer Certification](https://waylearn.gitbook.io/solana-developer-certification/)
+
+---
+
+## 🚀 Devnet Deployment Odyssey
+
+This project's deployment was not a one-shot process. It took multiple real-world fixes that are worth documenting:
+
+1. **Tooling PATH issues in WSL**
+- `solana` and `cargo-build-sbf` were not available in a fresh shell.
+- Fixed by exporting Solana's active release bin path in WSL.
+
+2. **Program ID mismatch (`DeclaredProgramIdMismatch`)**
+- A new deploy keypair generated IDs that did not match `declare_id!` and `Anchor.toml`.
+- Fixed by syncing IDs across:
+   - `programs/vault-chain/src/lib.rs`
+   - `programs/simple_store/src/lib.rs`
+   - `Anchor.toml` (`[programs.localnet]` and `[programs.devnet]`)
+
+3. **Insufficient funds during deploy**
+- Deploy failed when upgrade authority account had not enough SOL for program write + fee.
+- Resolved by funding the deploy wallet and retrying once configuration was correct.
+
+4. **Anchor test/module setup fixes before deploy**
+- Updated test and TS configuration to avoid module resolution/runtime import issues.
+- Confirmed full CRUD tests pass locally before retrying devnet deployment.
+
+### Final verified deployment
+
+- Wallet (devnet): `58njUyGj19dNZqYAyWGye3GvWC19nRjs86TKkciCHNsD`
+- `vault_chain` Program ID: `DG4yk7viv6UpFBHaVRjyhviqPEeuRnNJuF6jb1Yt36so`
+- `simple_store` Program ID: `BsPTGFdpimkW1KTCRtXDRYgVKjPc8w9oWVghuY4WRyfW`
+
+Verification command:
+
+```bash
+solana program show DG4yk7viv6UpFBHaVRjyhviqPEeuRnNJuF6jb1Yt36so
+solana program show BsPTGFdpimkW1KTCRtXDRYgVKjPc8w9oWVghuY4WRyfW
+```
+
+Both programs are confirmed on Devnet with this wallet as upgrade authority.
