@@ -14,9 +14,9 @@ vault_chain = "HSQMtGMTM4LfmQt7qGB52ZhpCH8LVAVYJcV2Q3ZDqfzJ"
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "devnet"
+cluster = "localnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
-test = "yarn run ts-mocha --require ts-node/register --timeout 1000000 tests/**/*.ts"
+test = "npx ts-mocha --require ts-node/register --timeout 1000000 tests/**/*.ts"
 
