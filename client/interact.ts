@@ -52,7 +52,7 @@ async function main() {
 
   // Load IDL and program
   const PROGRAM_ID = new PublicKey(
-    "SvmjFVPgVBBwEAV9p1w9CAF8sCmvBPjxPhhgXcNVBTe"
+    "HSQMtGMTM4LfmQt7qGB52ZhpCH8LVAVYJcV2Q3ZDqfzJ"
   );
 
   const idlPath = "./target/idl/vault_chain.json";
