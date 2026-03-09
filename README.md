@@ -472,3 +472,25 @@ solana program show BsPTGFdpimkW1KTCRtXDRYgVKjPc8w9oWVghuY4WRyfW
 ```
 
 Both programs are confirmed on Devnet with this wallet as upgrade authority.
+
+### On-chain verification output (evidence)
+
+```bash
+$ solana program show DG4yk7viv6UpFBHaVRjyhviqPEeuRnNJuF6jb1Yt36so
+Program Id: DG4yk7viv6UpFBHaVRjyhviqPEeuRnNJuF6jb1Yt36so
+Owner: BPFLoaderUpgradeab1e11111111111111111111111
+ProgramData Address: 6zd99vMs7fKxDcrq3ddiKAxyY9hQ2HxPmDm7Z9r51sd5
+Authority: 58njUyGj19dNZqYAyWGye3GvWC19nRjs86TKkciCHNsD
+Last Deployed In Slot: 447221127
+Data Length: 210536 (0x33668) bytes
+Balance: 1.46653464 SOL
+
+$ solana program show BsPTGFdpimkW1KTCRtXDRYgVKjPc8w9oWVghuY4WRyfW
+Program Id: BsPTGFdpimkW1KTCRtXDRYgVKjPc8w9oWVghuY4WRyfW
+Owner: BPFLoaderUpgradeab1e11111111111111111111111
+ProgramData Address: CuXk58V6GS9EPGw8mDmUxErpSEu32XnCPJ6LNb4wjsXy
+Authority: 58njUyGj19dNZqYAyWGye3GvWC19nRjs86TKkciCHNsD
+Last Deployed In Slot: 447221179
+Data Length: 210536 (0x33668) bytes
+Balance: 1.46653464 SOL
+```
